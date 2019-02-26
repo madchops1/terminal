@@ -1,0 +1,187 @@
+
+// Sublime vars
+$sublime-bg: #272822;
+$sublime-orange: #D68920;
+$sublime-pink: #F1266F;
+$sublime-blue: #54BDCA;
+$sublime-purple: #4F4A98;
+$sublime-khaki: #D9BF58;
+$sublime-white: #CAECE6;
+$sublime-green: #8BC42A;
+
+
+
+@keyframes "blink" {
+  from, to {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #8BC42A;
+  }
+}
+
+@-moz-keyframes blink {
+  from, to {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #8BC42A;
+  }
+}
+
+@-webkit-keyframes "blink" {
+  from, to {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #8BC42A;
+  }
+}
+
+@-ms-keyframes "blink" {
+  from, to {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #8BC42A;
+  }
+}
+
+@-o-keyframes "blink" {
+  from, to {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #8BC42A;
+  }
+}
+
+.cursor {
+  font-size: 12px;
+  position: relative;
+  left: 0px;
+}
+
+input#setter, input#faketab { /* explorer doesn't support [att=val] selector :( */
+  left: -1000px;
+  position: absolute;
+}
+
+  #terminal-wrapper {
+    height: 100%;
+    //height: 400px;
+    width: 600px;
+    //overflow: hidden;
+    margin: 0px auto;
+    padding: 0px;
+    //overflow-x: hidden;
+    //overflow-y: scroll;
+    font-family: monospace;
+    font-size: 12px;
+    border-radius: 12px 12px 12px 12px;
+        
+    .spacer {
+      display: inline-block;
+      width:10px;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0px;
+      padding: 0px;
+      height: 290px;
+      overflow-y: scroll;
+    
+      li {
+          list-style: none;
+    
+          margin: 0px;
+          padding: 0px;
+
+          
+
+          span {
+    
+            pre {
+              margin: 0px;
+              padding: 0px;
+              display: inline;
+            }
+              
+          }
+      }
+    }
+
+    #inner {
+      padding: 8px 8px 8px 8px;
+      height: 300px;
+      position: relative;
+    }
+
+    #terminal {
+      position: absolute;
+      bottom: 4px;
+    }
+
+    /**
+     * CLASSIC THEME
+     */
+    &.classic-theme {
+      background-color: #000;
+      color: #39FF14;
+      
+      .cursor {
+        background-color: #39FF14;
+        color: #39FF14;
+
+      }
+
+      a {
+        color: blue;
+
+        &:hover {
+          color: red;
+        }
+      }
+    }
+
+    /**
+     * WHITE THEME
+     */
+    &.white-theme {
+      background-color: #fff;
+      color: #000;
+    }
+
+    /**
+     * SUBLIME THEME
+     */
+    &.sublime-theme {
+      background-color: rgba(39,40,34,0.9);
+      color: $sublime-green;
+
+      .cursor {
+        background-color: $sublime-green;
+        color: $sublime-green;
+      }
+
+      pre, span {
+        &.pink { color: $sublime-pink; }
+        &.orange { color: $sublime-orange; }
+        &.purple { color: $sublime-purple; }
+        &.white { color: $sublime-white; }
+        &.khaki { color: $sublime-khaki; }
+      }
+
+      a {
+        color: $sublime-blue;
+        text-decoration: underline;
+
+        &:hover {
+          color: $sublime-blue;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
+    }
+  }

@@ -1,0 +1,51 @@
+<!--
+  <div id="terminal-wrapper" class="sublime-theme" ng-click="vm.focusTerminal()">
+  <div id="inner">
+      <ul>
+          <li ng-repeat="item in vm.output track by $index">
+              <span ng-hide="item.plain" class="host">karlsteltenpohl.com:</span>
+              <span ng-hide="item.plain" class="root">/</span><span ng-hide="item.plain" class="location">{{item.pwdString}}</span>
+              <span ng-hide="item.plain" class="user">you$</span>
+              <span ng-bind-html="item.text"></span>
+          </li>
+      </ul>
+      <div id="terminal" ng-click="vm.focusTerminal()">
+          <input type="text" id="setter" ng-model="vm.originalText" ng-focus="vm.focus()" ng-trim="false" ng-blur="vm.blur()" ng-keydown="vm.keydown($event, true)" ng-keyup="vm.keydown($event, false)" />
+          <input type="text" id="faketab" ng-focus="vm.tabFocus()" ng-blur="" ng-keydown="" ng-keyup="" />
+          <div id="getter">
+              <span class="host">karlsteltenpohl.com:</span>
+              <span class="root">/</span><span class="location">{{vm.pwdString}}</span>
+              <span class="user">you</span>$
+              <span ng-bind-html="item.text"></span>
+              <span id="writer" ng-bind-html="vm.cloneText"></span><b class="cursor blink" ng-hide="vm.hideCarrot" id="cursor" ng-style="vm.cursorStyle">&nbsp;<div id="container"></div></b>
+          </div>
+      </div>
+  </div>
+</div>
+-->
+<div id="terminal-wrapper" class="sublime-theme" (click)="focus()" #terminalwrapper>
+  <div id="inner">
+      <ul #terminallist>
+        <li *ngFor="let item of output">
+          <span [hidden]="item.plain" class="user">you@</span>
+          <span [hidden]="item.plain" class="host">karlsteltenpohl.com:</span>
+          <span [hidden]="item.plain" class="root">/</span>
+          <span [hidden]="item.plain" class="location">{{ item.pwdString }}$</span>
+          <span class="spacer"> </span>
+          <span [innerHtml]="item.text"></span>
+        </li>
+      </ul>
+      <div id="terminal" (click)="focus()">
+          <input type="text" id="setter" #setter [(ngModel)]="originalText" (keydown)="keyDown($event, true)" (keyup)="keyDown($event, false)" />
+          <input type="text" id="faketab" #faketab />
+          <div id="getter">
+              <span class="user">you@</span>
+              <span class="host">karlsteltenpohl.com:</span>
+              <span class="root">/</span>
+              <span class="location">{{ pwdString }}$</span>
+              <span class="spacer"> </span>
+              <span id="writer" [innerHtml]="cloneText"></span><b class="cursor blink" id="cursor" #cursor [ngStyle]="cursorStyle">&nbsp;<div id="container"></div></b>
+          </div>
+      </div>
+  </div>
+</div>
