@@ -12,8 +12,4 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  firstClick() {
-    console.log('clicked');
-  }
-
 }
