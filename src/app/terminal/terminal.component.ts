@@ -180,23 +180,30 @@ export class TerminalComponent implements OnInit {
   
   */
   private initOutput(): any {
-    //if(this.outputObservable) {
-    //  this.outputObservable.unsubscribe();
-    //}
+    
+    // Get the output from output
     this.outputObservable = this.outputService.getOutput();
     this.outputObservable.subscribe((outputData: Output[]) => {
       this.output = outputData;
+      
+      // These updates and timeouts are necessary to smooth out the experience of subscribing to the data if the user navigates away and back... 
       this.updateScroll();
-    });
 
+      // A quick timeout to update the view scroll after loading contents eg. ls output, LOADING..., etc...
+      setTimeout(() => {
+        this.updateScroll();
+      }, 100);
+
+      // A longer timeout to update the view scroll after LOADING is finished eg. cat, etc...
+      setTimeout(() => {
+        this.updateScroll();
+      }, 500);
+    });
   }
 
   ngOnInit() {
-
     this.initOutput();
     this.focus();
-    
-
   }
 
 }
