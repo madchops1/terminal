@@ -8,7 +8,6 @@ import { DirectoryStructureService } from './directory-structure.service';
 })
 export class LsService {
 
-  
   output: any = [];
   target: string = '';
   targetArray: any = [];
@@ -92,6 +91,7 @@ export class LsService {
     }
   }
 
+  // builds the faux permission string facade
   private permissionString(item): any {
 
     var permString = "r-";

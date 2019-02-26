@@ -36,8 +36,8 @@
         </li>
       </ul>
       <div id="terminal" (click)="focus()">
-          <input type="text" id="setter" #setter [(ngModel)]="originalText" (keydown)="keyDown($event, true)" (keyup)="keyDown($event, false)" />
-          <input type="text" id="faketab" #faketab />
+          <input type="text" id="setter" autocomplete="off" #setter [(ngModel)]="originalText" (keydown)="keyDown($event, true)" (keyup)="keyDown($event, false)" />
+          <input type="text" id="faketab" autocomplete="off" #faketab />
           <div id="getter">
               <span class="user">you@</span>
               <span class="host">karlsteltenpohl.com:</span>

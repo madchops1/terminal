@@ -4,6 +4,7 @@ import { OutputService } from '../output.service';
 import { timeout } from 'q';
 import { PwdService } from '../pwd.service';
 import { TerminalService } from '../terminal.service';
+import { HistoryService } from '../history.service';
 
 @Component({
   selector: 'app-terminal',
@@ -27,14 +28,13 @@ export class TerminalComponent implements OnInit {
   location: string = '';
   pwdString: string = '';
   outputObservable: any = false;
-  //background: = cd.defaultBg;
-  //var historyPosition = 0;
-  //var lastKeyCode = 0;
+  lastKeyCode: any = 0;
 
   constructor(
     private outputService: OutputService, 
     private pwdService: PwdService, 
-    private terminalService: TerminalService) {}
+    private terminalService: TerminalService,
+    private historyService: HistoryService) {}
 
   public focus(): any {
     //console.log('FOCUS');
@@ -97,29 +97,35 @@ export class TerminalComponent implements OnInit {
     // Handle hitting the enter key
     if(keycode == 13 && this.originalText != '') {
 
+      // Push the input into the output
       this.outputService.addOutput({ human: true, pwdString: '', text: this.originalText });
+      
+      // Handle the input
       let response = this.terminalService.handle(this.originalText);
       
-      console.log('response', response);
+      // Push the response into output
+      //console.log('response', response);
       if(response) {
         this.outputService.addOutput(response);
       }
 
+      // Reset the input field
       this.originalText = '';
+
+      // Set the current location
       this.pwdString = this.pwdService.current.join("/");
+    
+      // These timeouts are necessary to smooth out the experience of loading files 
+      // A quick timeout to update the view scroll after loading contents eg. ls output, LOADING..., etc...
+      setTimeout(() => {
+        this.updateScroll();
+      }, 100);
 
+      // A longer timeout to update the view scroll after LOADING is finished eg. cat, etc...
+      setTimeout(() => {
+        this.updateScroll();
+      }, 500);
     }
-
-    // These timeouts are necessary to smooth out the experience of loading files 
-    // A quick timeout to update the view scroll after loading contents eg. ls output, LOADING..., etc...
-    setTimeout(() => {
-      this.updateScroll();
-    }, 100);
-
-    // A longer timeout to update the view scroll after LOADING is finished eg. cat, etc...
-    setTimeout(() => {
-      this.updateScroll();
-    }, 500);
 
   }
 
@@ -127,58 +133,51 @@ export class TerminalComponent implements OnInit {
   public keyDown(e, move): any {
     if(move) {  
       this.submitIt(e);
-      //  history(    e);
+      this.history(e);
       this.moveIt(e);
     }
     this.writeIt(e);
   };
 
+  private history(e): any {
+    e = e || window.event; // handle ie
+    let keycode = e.keyCode || e.which;
   
-
-  
-  /*
-  
-  
-
-  function history(e) {
-    e = e || window.event; 
-    var keycode = e.keyCode || e.which; 
+    // only up and down keys
     if(keycode == 38 || keycode == 40) {
+      
+      let history = this.historyService.getHistory();
 
-      var history = output.output.filter(function (item) {
-        return angular.isDefined(item.human) && item.human == true;
-      });
+      if(history.length) {
 
-      if(lastKeyCode == 38 || lastKeyCode == 40) {
-        if(keycode == 38 && historyPosition < history.length-1) {
-          historyPosition++;
-        } 
-        else if(keycode == 40 && historyPosition > 0) {
-          historyPosition--;
-        } 
-        else {
-          historyPosition = 0;
+        if(this.lastKeyCode == 38 || this.lastKeyCode == 40) {
+          if(keycode == 38 && this.historyService.historyPosition < history.length-1) {
+            this.historyService.historyPosition++;
+          } 
+          else if(keycode == 40 && this.historyService.historyPosition > 0) {
+            this.historyService.historyPosition--;
+          } 
+          else {
+            this.historyService.historyPosition = 0;
+          }
         }
-      }
+        
+        let historyValue = history[history.length-1-this.historyService.historyPosition].text;
+        this.originalText = historyValue;
+        
+        setTimeout(() => {
+          let a = this.originalText;
+          this.originalText = '';
+          setTimeout(() => {
+            this.originalText = a;
+          }, 10);
+        }, 10);
 
-      var historyValue = $sce.getTrustedHtml(history[history.length-1-historyPosition].text);
-      vm.originalText = historyValue;
-      
-      // push to end of input 
-      $timeout(function() {
-        var a = vm.originalText;
-        vm.originalText = '';
-        $timeout(function() {
-          vm.originalText = a;
-        },10); 
-      },10);
-      
-      lastKeyCode = keycode;
+        this.lastKeyCode = keycode;
+      }
     }
   }
-  
-  
-  */
+
   private initOutput(): any {
     
     // Get the output from output
@@ -205,5 +204,4 @@ export class TerminalComponent implements OnInit {
     this.initOutput();
     this.focus();
   }
-
 }
