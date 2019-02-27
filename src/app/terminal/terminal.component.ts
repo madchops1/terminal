@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { Output } from '../output.model';
 import { OutputService } from '../output.service';
-import { timeout } from 'q';
 import { PwdService } from '../pwd.service';
 import { TerminalService } from '../terminal.service';
 import { HistoryService } from '../history.service';
@@ -13,6 +12,7 @@ import { TabService } from '../tab.service';
   styleUrls: ['./terminal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
+
 export class TerminalComponent implements OnInit {
 
   @ViewChild('setter') setterElement: ElementRef;
@@ -48,17 +48,6 @@ export class TerminalComponent implements OnInit {
     this.originalText = this.tabService.tab(this.originalText);
     this.writeIt();
     this.focus();
-    /*
-    vm.originalText = tab.tab(vm.originalText);
-    $timeout(function() {
-      var a = vm.originalText;
-      vm.originalText = '';
-      $timeout(function() {
-        vm.originalText = a;
-        vm.focusTerminal();
-      },10); 
-    },10);
-    */
   }
   
   public blur(): any {
