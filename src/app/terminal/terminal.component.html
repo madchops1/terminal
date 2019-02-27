@@ -11,7 +11,7 @@
         </li>
       </ul>
       <div id="terminal" (click)="focus()">
-          <input type="text" id="setter" autocomplete="off" #setter [(ngModel)]="originalText" (blur)="blur()" (keydown)="keyDown($event, true)" (keyup)="keyDown($event, false)" />
+          <input type="text" id="setter" autocomplete="off" #setter [(ngModel)]="originalText" (keydown)="keyDown($event, true)" (keyup)="keyDown($event, false)" />
           <input type="text" id="faketab" autocomplete="off" #faketab (focus)="tabFocus()" />
           <div id="getter">
               <span class="user">you@</span>

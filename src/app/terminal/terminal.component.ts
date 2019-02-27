@@ -5,6 +5,7 @@ import { timeout } from 'q';
 import { PwdService } from '../pwd.service';
 import { TerminalService } from '../terminal.service';
 import { HistoryService } from '../history.service';
+import { TabService } from '../tab.service';
 
 @Component({
   selector: 'app-terminal',
@@ -33,7 +34,8 @@ export class TerminalComponent implements OnInit {
     private outputService: OutputService, 
     private pwdService: PwdService, 
     private terminalService: TerminalService,
-    private historyService: HistoryService) {}
+    private historyService: HistoryService,
+    private tabService: TabService) {}
 
   public focus(): any {
     //console.log('FOCUS');
@@ -42,7 +44,10 @@ export class TerminalComponent implements OnInit {
   }
 
   public tabFocus(): any {
-    
+    console.log('tabFocus()');  
+    this.originalText = this.tabService.tab(this.originalText);
+    this.writeIt();
+    this.focus();
     /*
     vm.originalText = tab.tab(vm.originalText);
     $timeout(function() {
@@ -73,7 +78,7 @@ export class TerminalComponent implements OnInit {
   }
 
   // move the text from the actual hidden input field to the model for the faux input line.
-  writeIt(e): any {
+  writeIt(): any {
     this.cloneText = this.nl2br(this.originalText);
   }
   
@@ -81,30 +86,34 @@ export class TerminalComponent implements OnInit {
   moveIt(e): any { 
     e = e || window.event;
     let keycode = e.keyCode || e.which;
-    let count = this.originalText.length;
-    let c = 8;
-    //console.log('keycode', keycode);
+    if(this.originalText && this.originalText !== "") {
+      let count = this.originalText.length;
+      let c = 8;
+      //console.log('keycode', keycode);
 
-    // if the key pressed by the user is left 
-    // and the position of the cursor is greater than 
-    // or equal to 0 - the number of words in the textarea - 1 * 10 then ...
-    if(keycode == 37 && parseInt(this.cursorStyle.left) >= (0-((count-1)*c))) { 
-      this.cursorStyle.left = parseInt(this.cursorStyle.left) - c + "px";
-    } 
+      // if the key pressed by the user is left 
+      // and the position of the cursor is greater than 
+      // or equal to 0 - the number of words in the textarea - 1 * 10 then ...
+      if(keycode == 37 && parseInt(this.cursorStyle.left) >= (0-((count-1)*c))) { 
+        this.cursorStyle.left = parseInt(this.cursorStyle.left) - c + "px";
+      } 
 
-    else if(keycode == 38) {
-      // go to the beginning TODO
-    }
+      else if(keycode == 38) {
+        // go to the beginning TODO
+        // ...
+      }
 
-    // otherwise, if the key pressed by the user 
-    // if right then check if the position 
-    // of the cursor + 10 is smaller than or equal to zero if it is then ...
-    else if(keycode == 39 && (parseInt(this.cursorStyle.left) + c) <= 0) { 
-      this.cursorStyle.left = parseInt(this.cursorStyle.left) + c + "px"; // move the "fake caret" to the right
-    }
+      // otherwise, if the key pressed by the user 
+      // if right then check if the position 
+      // of the cursor + 10 is smaller than or equal to zero if it is then ...
+      else if(keycode == 39 && (parseInt(this.cursorStyle.left) + c) <= 0) { 
+        this.cursorStyle.left = parseInt(this.cursorStyle.left) + c + "px"; // move the "fake caret" to the right
+      }
 
-    else if(keycode == 40) {
-      // go to the end TODO
+      else if(keycode == 40) {
+        // go to the end TODO
+        // ...
+      }
     }
   }
 
@@ -156,7 +165,7 @@ export class TerminalComponent implements OnInit {
       this.history(e);
       this.moveIt(e);
     }
-    this.writeIt(e);
+    this.writeIt();
   };
 
   private history(e): any {
