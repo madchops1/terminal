@@ -25,7 +25,6 @@ export class TabService {
     private directoryStructureService: DirectoryStructureService
     ) { }
 
-
   public tab(text): any {
     this.text = text;
     
@@ -50,6 +49,10 @@ export class TabService {
 
         this.target = this.input[1];
         
+        this.target = this.target.replace(/^\/+/g, '');
+
+        console.log('cat()', this.target);
+
         // break the target up into array
         this.targetArray = this.target.split("/");
 
@@ -60,9 +63,9 @@ export class TabService {
         // handle ../
         this.transverseUp();
 
-        console.log('tab()', this.combinedTarget, this.combinedTargetLength);
-
         this.combinedTargetLength = this.combinedTarget.length-1;
+
+        console.log('tab()', this.combinedTarget, this.combinedTargetLength);
         
         // Transverse down the tree
         return this.transverseDown(this.directoryStructureService.directoryStructure, 0);
@@ -157,24 +160,8 @@ export class TabService {
 
       console.log('cd(), combinedTargetString', combinedTargetString);
 
-      // remove the current pwd
-      //console.log('cd() current', this.current, this.pwdService.current);
-
-      let currentString = this.current.join("\/"); // escaped string
-
-      if (currentString !== "") { currentString += "\/"; } // escaped string
-
-      console.log('cd() currentString', currentString);
-
-      // do the actual replace of the pwd
-      combinedTargetString = combinedTargetString.replace(currentString,"");
-
-      // TODO
-      // add reverse replacing for tab completion while transversing upward
-      //...
-
       // add the name of the matched obj to the combinedTargetString
-      let output =  this.command + " " + combinedTargetString + cacheName;
+      let output =  this.command + " /" + combinedTargetString + cacheName;
 
       // add a slash at the end of ttring if it is a directory match
       if(cacheType == "directory") {
