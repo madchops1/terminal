@@ -9,7 +9,16 @@ $sublime-khaki: #D9BF58;
 $sublime-white: #CAECE6;
 $sublime-green: #8BC42A;
 
-
+.blinking-cursor {
+  font-weight: 100;
+  font-size: 30px;
+  //color: #2E3D48;
+  -webkit-animation: 1s blink step-end infinite;
+  -moz-animation: 1s blink step-end infinite;
+  -ms-animation: 1s blink step-end infinite;
+  -o-animation: 1s blink step-end infinite;
+  animation: 1s blink step-end infinite;
+}
 
 @keyframes "blink" {
   from, to {

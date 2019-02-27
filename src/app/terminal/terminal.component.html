@@ -36,15 +36,15 @@
         </li>
       </ul>
       <div id="terminal" (click)="focus()">
-          <input type="text" id="setter" autocomplete="off" #setter [(ngModel)]="originalText" (keydown)="keyDown($event, true)" (keyup)="keyDown($event, false)" />
-          <input type="text" id="faketab" autocomplete="off" #faketab />
+          <input type="text" id="setter" autocomplete="off" #setter [(ngModel)]="originalText" (blur)="blur()" (keydown)="keyDown($event, true)" (keyup)="keyDown($event, false)" />
+          <input type="text" id="faketab" autocomplete="off" #faketab (focus)="tabFocus()" />
           <div id="getter">
               <span class="user">you@</span>
               <span class="host">karlsteltenpohl.com:</span>
               <span class="root">/</span>
               <span class="location">{{ pwdString }}$</span>
               <span class="spacer"> </span>
-              <span id="writer" [innerHtml]="cloneText"></span><b class="cursor blink" id="cursor" #cursor [ngStyle]="cursorStyle">&nbsp;<div id="container"></div></b>
+              <span id="writer" [innerHtml]="cloneText"></span><b class="cursor blinking-cursor" id="cursor" #cursor [hidden]="hideCarrot" [ngStyle]="cursorStyle">&nbsp;<div id="container"></div></b>
           </div>
       </div>
   </div>

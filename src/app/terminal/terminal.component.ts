@@ -18,17 +18,16 @@ export class TerminalComponent implements OnInit {
   @ViewChild('terminalwrapper') terminalElement: ElementRef;
   @ViewChild('terminallist') terminalList: ElementRef;
 
-  output: Output[] = [];
-
-  hideCarrot: boolean = true;
-  originalText: string = '';
-  public cloneText: string = '';
-  cursorStyle: any = { left: 0 };
-  terminal: boolean = false;
-  location: string = '';
-  pwdString: string = '';
-  outputObservable: any = false;
-  lastKeyCode: any = 0;
+  output: Output[] = [];            // model for the output
+  hideCarrot: boolean = true;       // toggles visibility of the cursor/carrot
+  originalText: string = '';        // hidden original input txt
+  public cloneText: string = '';    // model for the cloned facade txt
+  cursorStyle: any = { left: 0 };   // handles carrot position
+  terminal: boolean = false;        // ... maybe can delete
+  location: string = '';            // ... maybe can delete
+  pwdString: string = '';           // used for the current pwd on the input line
+  outputObservable: any = false;    // observable for the output
+  lastKeyCode: any = 0;             // track last keycode for history interaction
 
   constructor(
     private outputService: OutputService, 
@@ -39,7 +38,28 @@ export class TerminalComponent implements OnInit {
   public focus(): any {
     //console.log('FOCUS');
     this.setterElement.nativeElement.focus();
+    this.hideCarrot = false;
   }
+
+  public tabFocus(): any {
+    
+    /*
+    vm.originalText = tab.tab(vm.originalText);
+    $timeout(function() {
+      var a = vm.originalText;
+      vm.originalText = '';
+      $timeout(function() {
+        vm.originalText = a;
+        vm.focusTerminal();
+      },10); 
+    },10);
+    */
+  }
+  
+  public blur(): any {
+    this.hideCarrot = true;
+    this.focus();
+  };
   
   updateScroll(): any {
     //console.log('UPDATE SCROLL');
